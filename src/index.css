@@ -1,0 +1,428 @@
+/* ── tokens ────────────────────────────────────────────────────────── */
+
+:root {
+  --ground: #F2F2ED;
+  --ink:    #0A0A0A;
+  --dim:    #6E6E66;   /* 4.58:1 — carries real copy, so it clears AA at 11px */
+  --rule:   #DEDED6;
+
+  --pad: 10px;              /* the whole page aligns to this module */
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --disp: "Archivo", "Helvetica Neue", Arial, sans-serif;
+
+  --xs: 11px;
+  --sm: 13px;
+  --track: 0.06em;
+}
+
+[data-theme="dark"] {
+  --ground: #0B0B0B;
+  --ink:    #EDEDE6;
+  --dim:    #7E7E76;   /* 4.81:1 */
+  --rule:   #1E1E1D;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: var(--sm);
+  font-weight: 400;
+  line-height: 1.45;
+  padding-block: var(--pad);
+  transition: background 180ms linear, color 180ms linear;
+}
+
+/* the 10px module is applied per section, not on body, so full-bleed
+   elements (the inverted table row) can reach the viewport edge exactly */
+.hero, .index, .tiles, .about, .foot { padding-inline: var(--pad); }
+
+a { color: inherit; text-decoration: none; }
+
+.sr, .skip {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip:focus {
+  position: fixed;
+  top: var(--pad); left: var(--pad);
+  z-index: 90;
+  width: auto; height: auto;
+  clip-path: none;
+  background: var(--ink);
+  color: var(--ground);
+  padding: 6px 10px;
+}
+
+:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* shared type roles */
+
+.lab {
+  font-size: var(--xs);
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+}
+
+.dim {
+  font-size: var(--xs);
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* ── nav ───────────────────────────────────────────────────────────── */
+
+.nav {
+  position: fixed;
+  top: var(--pad); left: var(--pad); right: var(--pad);
+  z-index: 50;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  align-items: start;
+  gap: 20px;
+  font-size: var(--xs);
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  /* difference blend keeps the bar legible over the hero mark and over dark
+     tiles, and inverts correctly in both themes from one source colour */
+  mix-blend-mode: difference;
+  color: #F2F2ED;
+}
+
+.nav__col { display: flex; gap: 20px; }
+.nav__col--end { justify-content: flex-end; }
+
+.nav__theme {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* ── loader ────────────────────────────────────────────────────────── */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--ground);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.loader__bar {
+  position: absolute;
+  top: var(--pad);
+  left: 0;
+  right: 0;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--sm);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.loader--out {
+  opacity: 0;
+  transform: scale(1.03);
+  pointer-events: none;
+}
+
+/* ── hero ──────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  height: calc(100svh - var(--pad) * 2);
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.hero__mark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  pointer-events: none;        /* only the figure below takes the pointer */
+  overflow: clip;              /* a mis-measured grid must never scroll the page */
+}
+
+/* sized in css, measured back in js — the binary grid fits itself to whatever
+   box the svg actually got, so the two states land on the same pixels */
+.hero__mark-fig {
+  position: relative;
+  height: 62%;
+  aspect-ratio: 200 / 140;
+  max-width: 92%;
+  pointer-events: auto;
+}
+
+.hero__mark-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 120ms linear;
+}
+
+.hero__mark-svg.is-out { opacity: 0; }
+
+.hero__mark-bits {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  user-select: none;
+  pointer-events: none;
+}
+
+.hero__base {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-bottom: 20px;
+}
+
+.hero__cell { display: flex; flex-direction: column; }
+.hero__cell--end { text-align: right; }
+
+/* ── index table ───────────────────────────────────────────────────── */
+
+.index { padding-top: 40px; }
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 10px;
+}
+
+.table { margin-top: 10px; }
+
+.row {
+  display: grid;
+  grid-template-columns: 4fr 3fr 4fr 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 10px var(--pad);
+  margin-inline: calc(var(--pad) * -1);
+  font-size: var(--xs);
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+  transition: background 120ms linear, color 120ms linear;
+}
+
+.row--head {
+  color: var(--dim);
+  padding-bottom: 0;
+}
+
+.row--y { text-align: right; }
+
+a.row:hover,
+a.row:focus-visible {
+  background: var(--ink);
+  color: var(--ground);
+  outline-offset: 0;
+}
+
+.role { display: flex; align-items: center; gap: 6px; }
+
+.chip {
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  background: transparent;
+  flex: none;
+}
+
+.chip.is-on { background: currentColor; }
+
+/* ── tiles ─────────────────────────────────────────────────────────── */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding-top: 120px;
+}
+
+.tile { display: flex; flex-direction: column; gap: 10px; }
+
+.tile__img {
+  aspect-ratio: 4 / 5;
+  background: var(--rule);
+  position: relative;
+  filter: grayscale(1) contrast(0.75) opacity(0.7);
+  transition: filter 220ms ease;
+}
+
+.tile__img::after {
+  content: "[ IMAGE " attr(data-slot) " ]";
+  position: absolute;
+  inset: auto auto 10px 10px;
+  font-size: var(--xs);
+  letter-spacing: var(--track);
+  color: var(--ink);           /* scaffolding — should read as an empty slot */
+}
+
+.tile:hover .tile__img { filter: none; }
+
+.tile figcaption {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--xs);
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+}
+
+/* ── about ─────────────────────────────────────────────────────────── */
+
+.about { padding-top: 160px; }
+
+/* statement and columns share one left edge, indented like the reference */
+.about__inner {
+  width: 74%;
+  margin-left: auto;
+}
+
+.about__lead {
+  font-family: var(--disp);
+  font-weight: 600;
+  font-size: clamp(28px, 3.6vw, 54px);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+
+.about__cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 20px;
+  margin-top: 80px;
+}
+
+.about__cols p {
+  font-size: var(--xs);
+  line-height: 1.6;
+  color: var(--dim);
+  margin-top: 6px;
+}
+
+/* ── footer ────────────────────────────────────────────────────────── */
+
+.foot {
+  padding-top: 160px;
+  container-type: inline-size;   /* wordmark measures against content box */
+}
+
+/* "SHAXZOD" in Archivo 800 at -4.5% tracking measures 4.84x its font-size,
+   so this fills the 10px-inset content width exactly. Retune the divisor
+   if the wordmark text ever changes. */
+.foot__mark {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-size: calc((100vw - var(--pad) * 2 - 16px) / 4.84);   /* fallback */
+  font-size: calc(100cqw / 4.84);
+  line-height: 0.78;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  overflow: clip;              /* guards a fallback face with wider metrics */
+}
+
+.foot__base {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.foot__cell {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--xs);
+  letter-spacing: var(--track);
+  text-transform: uppercase;
+}
+
+.foot__cell--end { align-items: flex-end; }
+
+/* ── cursor label ──────────────────────────────────────────────────── */
+
+.cursor {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 80;
+  padding: 4px 6px;
+  background: var(--ink);
+  color: var(--ground);
+  font-size: 10px;
+  letter-spacing: var(--track);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms linear;
+  will-change: transform;
+}
+
+.cursor.is-on { opacity: 1; }
+
+/* ── responsive ────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  /* one row, like the reference: mark left, actions right. The three
+     section links go — four sections don't earn a menu. */
+  .nav { display: flex; align-items: baseline; gap: 14px; }
+  .nav__mark { margin-right: auto; }
+  .nav__col:nth-of-type(1), .nav__col:nth-of-type(2) { display: none; }
+
+  .hero__base { grid-template-columns: 1fr; gap: 10px; }
+  .hero__cell--end { text-align: left; }
+
+  .tiles { grid-template-columns: repeat(2, 1fr); padding-top: 80px; }
+  .about { padding-top: 100px; }
+  .about__inner { width: 100%; }
+  .about__cols { grid-template-columns: 1fr; margin-top: 40px; }
+  .foot { padding-top: 100px; }
+  .foot__base { grid-template-columns: 1fr; gap: 20px; }
+  .foot__cell--end { align-items: flex-start; }
+}
+
+@media (max-width: 600px) {
+  /* stack is the first column worth losing — role and year carry the row */
+  .row { grid-template-columns: 5fr 4fr 1fr; }
+  .row span:nth-child(3) { display: none; }
+
+  .tiles { grid-template-columns: 1fr; }
+}
+
+@media (pointer: coarse) {
+  .cursor { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+}
