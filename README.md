@@ -121,5 +121,31 @@ env vars are read at build time.
 
 - Add the live URL to your GitHub profile, LinkedIn, and CV.
 - Point a custom domain at it in Vercel → Settings → Domains if you have one.
-- `metadataBase` in `src/app/layout.tsx` still says `https://example.com`.
-  Change it to your real domain or social link previews will break.
+---
+
+## Link previews
+
+Paste the URL into X, Telegram, LinkedIn, Slack, WhatsApp or iMessage and it
+unfurls into a card. That's **Open Graph** (`og:*` tags) plus **Twitter Cards**.
+
+The image is generated at build time by `src/app/opengraph-image.tsx` — 1200×630,
+drawn in the site's own palette with the real Geist fonts, and built from
+`src/content/site.ts`, so it can never drift from the rest of the page. Next
+injects `og:image`, `twitter:image` and the dimension tags automatically.
+
+The one thing that breaks previews is a wrong base URL: the image must be an
+**absolute** URL, and scrapers silently drop the card if it isn't. That's
+handled in `src/lib/site-url.ts`, which prefers `NEXT_PUBLIC_SITE_URL`, then
+Vercel's production URL, then the per-deploy URL, then localhost. On Vercel it
+works with no configuration; set `NEXT_PUBLIC_SITE_URL` once you have a custom
+domain.
+
+To check it after deploying:
+
+- X — <https://cards-dev.twitter.com/validator>
+- Facebook / general OG — <https://developers.facebook.com/tools/debug/>
+- LinkedIn — <https://www.linkedin.com/post-inspector/>
+- Telegram — message [@WebpageBot](https://t.me/WebpageBot) to refresh its cache
+
+Scrapers cache aggressively. If you change the image, use those tools to force
+a refresh or the old card will keep appearing for days.
