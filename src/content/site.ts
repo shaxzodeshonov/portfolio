@@ -199,12 +199,11 @@ export const signal = {
   label: "05 / Signal",
   heading: "Where I'm at.",
   /**
-   * NEED — decide what to do with the heatmap above these stats. It currently
-   * renders SYNTHETIC data from a seeded generator, which is fine as a design
-   * placeholder and not fine on a page you send to employers. Either wire
-   * src/lib/stats.ts to the GitHub GraphQL API or drop the heatmap entirely.
+   * Shown only while the heatmap is falling back to sample data — i.e. when
+   * GITHUB_TOKEN is unset or invalid. Set the token and both this note and the
+   * "sample data" flag on the grid disappear by themselves.
    */
-  note: "Contribution grid is placeholder data — see the NEED note in src/content/site.ts before publishing.",
+  note: "Sample data: set GITHUB_TOKEN (scope read:user) to show your real contribution graph. See README.",
   stats: [
     { value: 4, label: "Years writing frontend", suffix: "" },
     { value: 1, label: "Year writing backend", suffix: "+" },

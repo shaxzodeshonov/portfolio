@@ -1,8 +1,8 @@
 import Counter from "@/components/ui/Counter";
 import Reveal from "@/components/ui/Reveal";
 import SectionHead from "@/components/ui/SectionHead";
-import { projects, signal } from "@/content/site";
-import { getContributionGrid, totalContributions } from "@/lib/stats";
+import { identity, projects, signal } from "@/content/site";
+import { getContributions, type ContributionData } from "@/lib/github";
 
 const LEVEL_STYLE = [
   "bg-line/60",
@@ -12,14 +12,18 @@ const LEVEL_STYLE = [
   "bg-signal",
 ] as const;
 
-function ContributionGrid() {
-  const grid = getContributionGrid();
-  const total = totalContributions(grid);
+function ContributionGrid({ data }: { data: ContributionData }) {
+  const { weeks: grid, total, source } = data;
 
   return (
     <div>
       <div className="flex items-baseline justify-between gap-4">
-        <p className="label">Commit activity · 12 months</p>
+        <p className="label">
+          Commit activity · 12 months
+          {source === "placeholder" ? (
+            <span className="ml-2 text-[#d98b8b]">· sample data</span>
+          ) : null}
+        </p>
         <p className="label">
           <span className="text-bone">{total.toLocaleString("en-US")}</span> total
         </p>
@@ -58,7 +62,14 @@ function ContributionGrid() {
   );
 }
 
-export default function Signal() {
+export default async function Signal() {
+  // Real data when GITHUB_TOKEN is set, the seeded placeholder otherwise —
+  // never a hard failure, so a missing or expired token can't break the build.
+  const githubHandle =
+    identity.socials.find((s) => s.label === "GitHub")?.handle.replace("@", "") ??
+    "shaxzodeshonov";
+  const contributions = await getContributions(githubHandle);
+
   return (
     <section id="signal" className="relative border-t border-line py-20 sm:py-28 lg:py-36">
       <div className="shell">
@@ -70,7 +81,7 @@ export default function Signal() {
         />
 
         <Reveal className="mt-12 sm:mt-16">
-          <ContributionGrid />
+          <ContributionGrid data={contributions} />
         </Reveal>
 
         <Reveal
@@ -95,7 +106,13 @@ export default function Signal() {
           ))}
         </Reveal>
 
-        <p className="mt-6 font-mono text-[10px] leading-relaxed text-dim">{signal.note}</p>
+        {/* Only warn when the grid is not real. Once GITHUB_TOKEN is set the
+            caveat disappears on its own. */}
+        {contributions.source === "placeholder" ? (
+          <p className="mt-6 font-mono text-[10px] leading-relaxed text-dim">
+            {signal.note}
+          </p>
+        ) : null}
       </div>
     </section>
   );

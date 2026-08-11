@@ -7,11 +7,9 @@
  * shape it returns is all the component knows about.
  */
 
-export interface ContributionDay {
-  /** 0 = none, 4 = busiest. */
-  level: 0 | 1 | 2 | 3 | 4;
-  count: number;
-}
+import type { ContributionDay } from "./contributions";
+
+export type { ContributionDay };
 
 /** Small, fast, well-distributed PRNG. Same seed, same sequence, always. */
 function mulberry32(seed: number) {

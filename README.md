@@ -3,10 +3,14 @@
 A single-page developer portfolio. Next.js 15 (App Router) · TypeScript · Tailwind v4 · GSAP · Three.js.
 
 ```bash
-npm run dev     # http://localhost:3000
-npm run build   # production build
-npm run verify  # typecheck + lint + chess engine tests
+npm run dev      # http://localhost:3000
+npm run build    # production build
+npm run preview  # build, then serve the production output
+npm run verify   # typecheck + lint + chess engine + GitHub parser tests
 ```
+
+> `next dev` and `next build` share the `.next` directory. Stop the dev server
+> before building, or just use `npm run preview`, which handles it.
 
 ---
 
@@ -71,6 +75,51 @@ These weren't afterthoughts, so don't undo them by accident:
 
 ---
 
+## The contribution graph is real (once you give it a token)
+
+The Signal section renders your actual GitHub contribution calendar. GitHub's
+REST API doesn't expose it — only GraphQL does, and that requires auth even for
+public data — so it needs a token:
+
+1. Go to <https://github.com/settings/tokens> → **Generate new token (classic)**.
+2. Tick **`read:user`**. Nothing else. Set an expiry you're happy to renew.
+3. Locally: copy `.env.example` to `.env.local` and paste the token into `GITHUB_TOKEN`.
+4. In production: add the same variable in your host's dashboard.
+
+Without a token nothing breaks — the grid falls back to seeded placeholder data
+and openly labels itself *"sample data"*, so you can't accidentally ship fake
+numbers as real ones. A bad or expired token behaves the same way, and the fetch
+is wrapped so it can never fail a build. Data is cached for an hour.
+
+---
+
 ## Deploy
 
-Push to GitHub and import on Vercel — no configuration needed. Add `RESEND_API_KEY` (or your provider's equivalent) once you wire up email.
+### 1. Put the code on GitHub
+
+You need a repo first. Create an **empty** one at <https://github.com/new> —
+no README, no .gitignore, no licence, or the first push will conflict. Then:
+
+```bash
+git remote add origin https://github.com/shaxzodeshonov/<repo-name>.git
+git push -u origin main
+```
+
+### 2. Deploy on Vercel
+
+1. Sign in at <https://vercel.com> with GitHub.
+2. **Add New → Project**, import the repo. Next.js is detected automatically —
+   leave the build settings alone.
+3. Before the first deploy, open **Environment Variables** and add
+   `GITHUB_TOKEN`. Add `RESEND_API_KEY` too if you've wired up email.
+4. Deploy. Every push to `main` redeploys; pull requests get preview URLs.
+
+If you add the token *after* the first deploy, redeploy for it to take effect —
+env vars are read at build time.
+
+### 3. Afterwards
+
+- Add the live URL to your GitHub profile, LinkedIn, and CV.
+- Point a custom domain at it in Vercel → Settings → Domains if you have one.
+- `metadataBase` in `src/app/layout.tsx` still says `https://example.com`.
+  Change it to your real domain or social link previews will break.

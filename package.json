@@ -10,7 +10,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "verify:chess": "node --experimental-strip-types scripts/verify-chess.mts",
-    "verify": "npm run typecheck && npm run lint && npm run verify:chess"
+    "verify:github": "node --experimental-strip-types scripts/verify-github.mts",
+    "verify": "npm run typecheck && npm run lint && npm run verify:chess && npm run verify:github"
   },
   "dependencies": {
     "@react-three/fiber": "^9.7.0",
