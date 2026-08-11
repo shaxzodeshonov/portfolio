@@ -22,11 +22,35 @@ function PersonJsonLd() {
     jobTitle: identity.role,
     description: identity.tagline,
     email: `mailto:${identity.email}`,
-    knowsAbout: ["React", "TypeScript", "Next.js", "Node.js", "PostgreSQL", "Prisma"],
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Tashkent",
+      addressCountry: "UZ",
+    },
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "Inha University in Tashkent",
+    },
+    knowsAbout: [
+      "React",
+      "TypeScript",
+      "Next.js",
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Prisma",
+      "C++",
+      "Qt",
+    ],
     sameAs: identity.socials
       .filter((s) => s.href.startsWith("http"))
       .map((s) => s.href),
-    hasOccupation: projects.map((p) => ({ "@type": "CreativeWork", name: p.name })),
+    subjectOf: projects.map((p) => ({
+      "@type": "CreativeWork",
+      name: p.name,
+      abstract: p.summary,
+      url: p.links[0].href,
+    })),
   };
 
   return (

@@ -95,7 +95,7 @@ export default function Nav() {
                   identity.availability.open ? "bg-signal" : "bg-muted"
                 }`}
               />
-              {identity.name}
+              {identity.shortName}
               <span className="hidden text-dim transition-colors group-hover:text-muted sm:inline">
                 / dev
               </span>

@@ -18,7 +18,10 @@ export default function SectionHead({
   className?: string;
 }) {
   return (
-    <div className={className}>
+    // `data-section-anchor` is what in-page links actually scroll to — see
+    // SmoothScroll. Without it they land on the section's padded top edge and
+    // the heading sits halfway down the viewport.
+    <div className={className} data-section-anchor>
       <Reveal className="flex items-center gap-4">
         <span className="label whitespace-nowrap">{label}</span>
         <span className="measure-rule flex-1" />

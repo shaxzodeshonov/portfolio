@@ -86,7 +86,10 @@ export default function Hero({ start }: { start: boolean }) {
     <section
       ref={rootRef}
       id="top"
-      className="grain relative flex min-h-[100svh] flex-col justify-between overflow-hidden pb-6 pt-24 sm:pb-10 sm:pt-28"
+      // The gap is a floor, not a fixed rhythm: justify-between still spreads
+      // the three blocks on a tall screen, but on a short or landscape one
+      // they can no longer collapse into each other.
+      className="grain relative flex min-h-[100svh] flex-col justify-between gap-10 overflow-hidden pb-6 pt-24 sm:gap-14 sm:pb-10 sm:pt-28"
     >
       {/* --- backdrop ---------------------------------------------------- */}
       <div className="blueprint-grid pointer-events-none absolute inset-0" />
@@ -151,10 +154,13 @@ export default function Hero({ start }: { start: boolean }) {
           className="mt-8 h-px w-full origin-left bg-line sm:mt-10"
         />
 
-        <div className="mt-6 grid gap-8 sm:mt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+        {/* items-center, not items-end: when the tagline wraps to two lines,
+            bottom-aligning the buttons drops them well below its optical
+            centre and the row reads as misaligned. */}
+        <div className="mt-6 grid gap-8 sm:mt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
           <p
             data-hero
-            className="max-w-[54ch] text-[length:var(--text-lede)] leading-[1.45] text-muted opacity-0"
+            className="max-w-[46ch] text-[length:var(--text-lede)] leading-[1.45] text-muted opacity-0"
           >
             {identity.tagline.split("—")[0]}
             <span className="editorial text-bone">

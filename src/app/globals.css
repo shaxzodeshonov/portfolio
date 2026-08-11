@@ -88,6 +88,15 @@
     border-radius: 2px;
   }
 
+  /* In-page links move focus to the section heading so keyboard users carry
+     on from where they landed. These blocks are given tabindex="-1" and are
+     never tab-reachable, so drawing a ring round the whole heading would be
+     noise rather than a useful indicator. */
+  [data-section-anchor]:focus,
+  [data-section-anchor]:focus-visible {
+    outline: none;
+  }
+
   /* Only hide the native cursor where we actually render a custom one. */
   @media (hover: hover) and (pointer: fine) {
     html.has-custom-cursor,

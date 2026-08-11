@@ -1,7 +1,7 @@
 import Counter from "@/components/ui/Counter";
 import Reveal from "@/components/ui/Reveal";
 import SectionHead from "@/components/ui/SectionHead";
-import { signal } from "@/content/site";
+import { projects, signal } from "@/content/site";
 import { getContributionGrid, totalContributions } from "@/lib/stats";
 
 const LEVEL_STYLE = [
@@ -59,8 +59,6 @@ function ContributionGrid() {
 }
 
 export default function Signal() {
-  const contributionTotal = totalContributions(getContributionGrid());
-
   return (
     <section id="signal" className="relative border-t border-line py-20 sm:py-28 lg:py-36">
       <div className="shell">
@@ -85,8 +83,8 @@ export default function Signal() {
               <dd className="font-mono text-[clamp(2rem,5vw,3.5rem)] leading-none tracking-tight text-bone">
                 <Counter
                   value={
-                    "derived" in stat && stat.derived === "contributions"
-                      ? contributionTotal
+                    "derived" in stat && stat.derived === "projects"
+                      ? projects.length
                       : stat.value
                   }
                   suffix={stat.suffix}

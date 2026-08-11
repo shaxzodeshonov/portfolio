@@ -10,7 +10,7 @@
     {
       "name": "portfolio-prod",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start"],
+      "runtimeArgs": ["run", "preview"],
       "port": 3000
     }
   ]

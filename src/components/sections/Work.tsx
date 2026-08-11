@@ -43,7 +43,21 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {/* name + summary */}
         <div className="lg:col-span-6">
           <h3 className="display text-[clamp(2.5rem,7vw,5.5rem)] text-bone">
-            {project.name}
+            <a
+              href={project.links[0].href}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="group/name inline-flex items-start gap-3 transition-colors hover:text-signal"
+            >
+              {project.name}
+              <span
+                aria-hidden="true"
+                className="mt-[0.35em] text-[0.3em] text-dim transition-all duration-300 group-hover/name:-translate-y-0.5 group-hover/name:translate-x-0.5 group-hover/name:text-signal"
+              >
+                ↗
+              </span>
+              <span className="sr-only"> — {project.links[0].label}</span>
+            </a>
           </h3>
           <p className="mt-4 max-w-[36ch] text-[length:var(--text-lede)] leading-[1.4] text-bone/85">
             {project.summary}
@@ -71,39 +85,54 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       </div>
 
       {/* metrics ---------------------------------------------------------- */}
-      <dl className="mt-10 grid grid-cols-1 gap-px overflow-hidden border-y border-line bg-line sm:grid-cols-3">
-        {project.metrics.map((metric) => (
-          <div
-            key={metric.label}
-            className="bg-void py-6 sm:px-6 sm:first:pl-0"
-          >
-            <dt className="label">{metric.label}</dt>
-            <dd className="mt-2 font-mono text-[clamp(1.75rem,3.6vw,2.75rem)] leading-none tracking-tight text-bone">
-              <Counter
-                value={metric.value}
-                prefix={metric.prefix}
-                suffix={metric.suffix}
-              />
-            </dd>
-          </div>
-        ))}
-      </dl>
+      {/* Hidden entirely when a project has no verifiable figures, rather
+          than padding the row out with invented ones. */}
+      {project.metrics.length > 0 ? (
+        <dl className="mt-10 grid grid-cols-1 gap-px overflow-hidden border-y border-line bg-line sm:grid-cols-3">
+          {project.metrics.map((metric) => (
+            <div
+              key={metric.label}
+              className="bg-void py-6 sm:px-6 sm:first:pl-0"
+            >
+              <dt className="label">{metric.label}</dt>
+              <dd className="mt-2 font-mono text-[clamp(1.75rem,3.6vw,2.75rem)] leading-none tracking-tight text-bone">
+                <Counter
+                  value={metric.value}
+                  prefix={metric.prefix}
+                  suffix={metric.suffix}
+                />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <div className="mt-10 border-t border-line" />
+      )}
 
-      <div className="mt-6 flex items-center justify-between">
-        <span className={`h-px w-0 transition-all duration-700 group-hover:w-24 ${accent.rule}`} />
-        <a
-          href={project.href}
-          className="group/link -my-3 inline-flex min-h-11 items-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted transition-colors hover:text-bone"
-        >
-          <span className="sr-only">{project.name}: </span>
-          Case study
-          <span
-            aria-hidden="true"
-            className="transition-transform duration-300 group-hover/link:translate-x-1"
-          >
-            ↗
-          </span>
-        </a>
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+        <span className={`hidden h-px w-0 transition-all duration-700 group-hover:w-24 sm:block ${accent.rule}`} />
+
+        <ul className="flex flex-wrap items-center gap-x-6 gap-y-1">
+          {project.links.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="group/link -my-3 inline-flex min-h-11 items-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted transition-colors hover:text-bone"
+              >
+                <span className="sr-only">{project.name}: </span>
+                {link.label}
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover/link:translate-x-1"
+                >
+                  ↗
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </Reveal>
   );
@@ -115,7 +144,7 @@ export default function Work() {
       <div className="shell">
         <SectionHead
           label="03 / Selected work"
-          heading={"Four things I built\nand had to keep alive."}
+          heading={"Four things I built\nand actually finished."}
           aside={`${projects.length} projects`}
           className="max-w-5xl"
         />

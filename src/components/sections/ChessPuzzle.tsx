@@ -358,10 +358,12 @@ export default function ChessPuzzle() {
             </p>
 
             <p className="mt-4 max-w-prose text-sm leading-relaxed text-muted">
-              A real move generator sits behind this — legality, pins, checks and
-              mate detection all computed in the browser. Illegal moves are not
-              offered, and the board decides whether you won by asking whether
-              black has a legal reply, not by comparing against a stored answer.
+              I wrote the move generator behind this from scratch — legality,
+              pins, checks and mate detection, all computed in the browser.
+              Illegal moves are never offered, and the board decides whether you
+              won by asking whether black has a legal reply, not by comparing
+              against a stored answer. It is here because it is the most honest
+              thing on this page: either it is correct or you can break it.
             </p>
 
             {/* Status is the live region: one place, so nothing double-announces. */}
