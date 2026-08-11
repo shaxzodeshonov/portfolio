@@ -4,14 +4,18 @@ import { manifesto } from "@/content/site";
 
 export default function Manifesto() {
   return (
-    <section id="approach" className="relative border-t border-line py-20 sm:py-28 lg:py-36">
+    <section
+      id="approach"
+      className="group/section relative border-t border-line py-20 sm:py-28 lg:py-36"
+    >
       <div className="blueprint-grid-fine pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(70%_60%_at_50%_50%,black,transparent)]" />
 
       <div className="relative shell">
         <SectionHead
+          index="2"
           label={manifesto.label}
           heading={manifesto.heading}
-          aside="fig. 02"
+          aside="how I got here"
           className="max-w-5xl"
         />
 
@@ -41,11 +45,11 @@ export default function Manifesto() {
                   key={annotation.at}
                   className="group relative grid grid-cols-[3.5rem_1fr] gap-4 border-t border-line py-5 last:border-b"
                 >
-                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-signal">
-                    {String(i + 1).padStart(2, "0")}
+                  <span className="numeric text-[0.8rem] text-signal">
+                    {i + 1}
                   </span>
                   <div>
-                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-bone">
+                    <p className="text-[0.95rem] font-medium text-bone">
                       {annotation.at}
                     </p>
                     <p className="mt-1.5 text-sm leading-relaxed text-muted">

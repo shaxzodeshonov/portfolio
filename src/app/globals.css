@@ -16,18 +16,20 @@
   --color-blueprint: #3d7eff;
 
   --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
-  --font-editorial: var(--font-editorial-serif), ui-serif, Georgia, serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 
   /* Fluid type scale — clamps do the responsive work so there are no
      orphaned breakpoint-only font sizes to keep in sync. */
-  /* 11vw keeps the longest hero line (14 characters) on one line at every
-     width down to 320px, and the 9.5rem cap stops it overflowing the fold
-     on a 900px-tall laptop. Both numbers were set by measuring, not taste. */
-  --text-display: clamp(2.5rem, 11vw, 9.5rem);
+  /* Sized against BOTH axes. Width alone was enough for a compact grotesk,
+     but Fraunces is taller and wider, and on short laptop viewports
+     (1280x800, 1440x900) a width-only clamp pushed the hero past the fold —
+     hiding the scroll affordance. `min(vw, vh)` lets the short axis win.
+     Every number here was set by measuring, not by taste. */
+  --text-display: clamp(2.5rem, min(11vw, 17vh), 9.5rem);
   --text-mega: clamp(2.5rem, 8.5vw, 8rem);
   --text-section: clamp(2rem, 5.5vw, 4.5rem);
   --text-lede: clamp(1.125rem, 2.1vw, 1.75rem);
@@ -61,7 +63,7 @@
   body {
     background-color: var(--color-void);
     color: var(--color-bone);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -161,21 +163,42 @@
 /* ------------------------------------------------------------------
    Typographic utilities
    ------------------------------------------------------------------ */
+/**
+ * Sentence-case Archivo at a normal size, not tracked-out uppercase mono.
+ * The old treatment is the single most recognisable "generated portfolio"
+ * signature; this reads as a magazine standfirst instead.
+ */
 .label {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--color-muted);
 }
 
+/** Figures, chess notation, coordinates — places monospace earns its keep. */
+.numeric {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/**
+ * The soft-emphasis accent. It used to be a thin italic serif; that face is
+ * gone, so emphasis now comes from weight and colour instead of a second
+ * typeface. No synthesised italic — Geist has no true italic and the browser's
+ * fake slant looks cheap at large sizes.
+ */
 .editorial {
-  font-family: var(--font-editorial);
-  font-style: italic;
-  font-weight: 400;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 450;
+  letter-spacing: -0.005em;
 }
 
 .display {
+  font-family: var(--font-display);
   font-weight: 500;
   letter-spacing: -0.045em;
   line-height: 0.85;

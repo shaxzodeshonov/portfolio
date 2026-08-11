@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 
@@ -7,23 +6,16 @@ import { identity } from "@/content/site";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-/**
- * Self-hosted rather than pulled from `next/font/google`.
+/*
+ * Geist Sans carries everything; Geist Mono is reserved for figures, chess
+ * notation, board coordinates and the clock — never for nav or section
+ * labels, where tracked-out uppercase mono is the single biggest tell of a
+ * templated developer portfolio.
  *
- * next/font/google downloads the font at BUILD time, which makes every build —
- * including every production deploy — depend on fonts.gstatic.com being
- * reachable. That is a real failure mode: a transient DNS blip failed a build
- * here with `EAI_AGAIN fonts.gstatic.com`. Shipping the two files (Instrument
- * Serif is OFL-licensed) makes builds deterministic and offline-capable.
+ * Both ship inside the `geist` package, so nothing is fetched at build time.
+ * That matters: `next/font/google` downloads during the build and already
+ * failed one here with `EAI_AGAIN fonts.gstatic.com`.
  */
-const editorial = localFont({
-  src: [
-    { path: "../fonts/InstrumentSerif-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/InstrumentSerif-Italic.woff2", weight: "400", style: "italic" },
-  ],
-  display: "swap",
-  variable: "--font-editorial-serif",
-});
 
 const title = `${identity.name} — ${identity.role}`;
 
@@ -87,13 +79,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable} ${editorial.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
       <body className="bg-void text-bone antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-sm focus:bg-signal focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:uppercase focus:tracking-[0.18em] focus:text-void"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-sm focus:bg-signal focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-void"
         >
           Skip to content
         </a>

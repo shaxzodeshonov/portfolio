@@ -77,14 +77,18 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative border-t border-line py-20 sm:py-28 lg:py-36">
+    <section
+      id="contact"
+      className="group/section relative border-t border-line py-20 sm:py-28 lg:py-36"
+    >
       <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-50" />
 
       <div className="relative shell">
         <SectionHead
+          index="7"
           label={contact.label}
           heading={contact.heading}
-          aside={identity.availability.open ? "Open to offers" : "Not looking"}
+          aside={identity.availability.open ? "open to offers" : "not looking"}
           className="max-w-4xl"
         />
 
@@ -99,14 +103,14 @@ export default function Contact() {
                 <p className="label">Direct</p>
                 <a
                   href={`mailto:${identity.email}`}
-                  className="mt-1 inline-flex min-h-11 items-center font-mono text-sm text-signal underline decoration-signal/30 underline-offset-4 transition-colors hover:decoration-signal"
+                  className="mt-1 inline-flex min-h-11 items-center text-sm text-signal underline decoration-signal/30 underline-offset-4 transition-colors hover:decoration-signal"
                 >
                   {identity.email}
                 </a>
               </div>
               <div>
                 <p className="label">Status</p>
-                <p className="mt-2 flex items-center gap-2 font-mono text-sm text-bone">
+                <p className="mt-2 flex items-center gap-2 text-sm text-bone">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal" />
                   {identity.availability.detail}
                 </p>
@@ -200,7 +204,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={state === "submitting"}
-                    className="group inline-flex h-13 items-center gap-3 rounded-full bg-bone px-7 font-mono text-[11px] uppercase tracking-[0.18em] text-void transition-colors hover:bg-signal disabled:cursor-wait disabled:opacity-60"
+                    className="group inline-flex h-13 items-center gap-3 rounded-full bg-bone px-7 text-[0.9rem] font-medium tracking-[-0.01em] text-void transition-colors hover:bg-signal disabled:cursor-wait disabled:opacity-60"
                   >
                     {state === "submitting" ? "Sending" : "Send message"}
                     <span
@@ -219,7 +223,7 @@ export default function Contact() {
                 <p
                   role="status"
                   aria-live="polite"
-                  className={`font-mono text-xs leading-relaxed ${
+                  className={`text-[0.85rem] leading-relaxed ${
                     state === "success"
                       ? "text-signal"
                       : state === "error"

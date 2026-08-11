@@ -34,7 +34,7 @@ export default function Footer() {
           </div>
 
           <div className="md:text-right">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-dim">
+            <p className="text-[0.85rem] text-dim">
               © {year} {identity.name}
             </p>
             <p className="mt-2 max-w-xs text-sm text-muted md:ml-auto">
@@ -45,7 +45,7 @@ export default function Footer() {
 
         <div className="measure-rule mt-12" />
 
-        <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.2em] text-dim">
+        <p className="editorial mt-4 text-[0.95rem] text-dim">
           fig. 08 — end of document
         </p>
       </div>

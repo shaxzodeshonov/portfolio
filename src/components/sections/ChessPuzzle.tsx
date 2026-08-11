@@ -210,10 +210,14 @@ export default function ChessPuzzle() {
   }, [opponent, puzzle.fen, puzzle.pattern]);
 
   return (
-    <section id="chess" className="relative border-t border-line py-20 sm:py-28 lg:py-36">
+    <section
+      id="chess"
+      className="group/section relative border-t border-line py-20 sm:py-28 lg:py-36"
+    >
       <div className="shell">
         <SectionHead
-          label="04 / Interlude"
+          index="4"
+          label="Interlude"
           heading="Mate in one."
           aside={puzzle.source}
           className="max-w-4xl"
@@ -285,7 +289,7 @@ export default function ChessPuzzle() {
                       {fileOf(index) === 0 ? (
                         <span
                           aria-hidden="true"
-                          className="absolute left-[3px] top-[2px] font-mono text-[8px] text-dim sm:text-[9px]"
+                          className="absolute left-[3px] top-[2px] numeric text-[8px] text-dim sm:text-[9px]"
                         >
                           {8 - rankIndexOf(index)}
                         </span>
@@ -293,7 +297,7 @@ export default function ChessPuzzle() {
                       {rankIndexOf(index) === 7 ? (
                         <span
                           aria-hidden="true"
-                          className="absolute bottom-[1px] right-[3px] font-mono text-[8px] text-dim sm:text-[9px]"
+                          className="absolute bottom-[1px] right-[3px] numeric text-[8px] text-dim sm:text-[9px]"
                         >
                           {FILE_LABELS[fileOf(index)]}
                         </span>
@@ -341,7 +345,7 @@ export default function ChessPuzzle() {
               ) : null}
             </div>
 
-            <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-dim">
+            <p className="mt-3 text-[0.8rem] text-dim">
               Click a piece, then a square · arrow keys to move focus, enter to select
             </p>
           </Reveal>
@@ -381,14 +385,14 @@ export default function ChessPuzzle() {
             >
               {message ? (
                 <p
-                  className={`font-mono text-sm leading-relaxed ${
+                  className={`numeric text-sm leading-relaxed ${
                     solved ? "text-signal" : status === "wrong" ? "text-[#d98b8b]" : "text-blueprint"
                   }`}
                 >
                   {message}
                 </p>
               ) : (
-                <p className="font-mono text-sm text-dim">
+                <p className="numeric text-sm text-dim">
                   Awaiting your move
                   <span className="ml-1 inline-block h-3.5 w-1.5 translate-y-0.5 animate-pulse bg-dim" />
                 </p>
@@ -410,7 +414,7 @@ export default function ChessPuzzle() {
                 type="button"
                 onClick={() => setShowHint(true)}
                 disabled={showHint || solved || status === "revealed"}
-                className="inline-flex h-11 items-center rounded-full border border-line px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-bone transition-colors hover:border-blueprint hover:text-blueprint disabled:cursor-not-allowed disabled:border-line/50 disabled:text-dim"
+                className="inline-flex h-11 items-center rounded-full border border-line px-5 text-[0.9rem] font-medium tracking-[-0.01em] text-bone transition-colors hover:border-blueprint hover:text-blueprint disabled:cursor-not-allowed disabled:border-line/50 disabled:text-dim"
               >
                 Hint
               </button>
@@ -419,7 +423,7 @@ export default function ChessPuzzle() {
                 type="button"
                 onClick={revealSolution}
                 disabled={solved || status === "revealed"}
-                className="inline-flex h-11 items-center rounded-full border border-line px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-bone transition-colors hover:border-bone disabled:cursor-not-allowed disabled:border-line/50 disabled:text-dim"
+                className="inline-flex h-11 items-center rounded-full border border-line px-5 text-[0.9rem] font-medium tracking-[-0.01em] text-bone transition-colors hover:border-bone disabled:cursor-not-allowed disabled:border-line/50 disabled:text-dim"
               >
                 Show solution
               </button>
@@ -431,7 +435,7 @@ export default function ChessPuzzle() {
                     ? setPuzzleIndex((i) => (i + 1) % puzzles.length)
                     : resetTo(puzzleIndex)
                 }
-                className="inline-flex h-11 items-center gap-2 rounded-full bg-bone px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-void transition-colors hover:bg-signal"
+                className="inline-flex h-11 items-center gap-2 rounded-full bg-bone px-5 text-[0.9rem] font-medium tracking-[-0.01em] text-void transition-colors hover:bg-signal"
               >
                 {solved || status === "revealed" ? "Next puzzle" : "Reset"}
                 <span aria-hidden="true">→</span>

@@ -38,7 +38,7 @@ export default function ScrollRail() {
       aria-hidden="true"
       className="pointer-events-none fixed right-6 top-1/2 z-[100] hidden -translate-y-1/2 flex-col items-center gap-3 lg:flex"
     >
-      <span className="font-mono text-[10px] tracking-[0.2em] text-dim">
+      <span className="numeric text-[0.65rem] text-dim">
         {String(percent).padStart(3, "0")}
       </span>
       <div className="relative h-40 w-px bg-line">
@@ -51,7 +51,7 @@ export default function ScrollRail() {
           />
         ))}
       </div>
-      <span className="font-mono text-[10px] tracking-[0.2em] text-dim">scr</span>
+      <span className="numeric text-[0.65rem] text-dim">scr</span>
     </div>
   );
 }

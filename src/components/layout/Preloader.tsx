@@ -100,7 +100,7 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
       </div>
 
       <div className="relative mx-auto w-full max-w-3xl">
-        <ul className="space-y-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-dim sm:text-xs">
+        <ul className="space-y-1.5 numeric text-[0.75rem] uppercase tracking-[0.1em] text-dim">
           {MANIFEST.map((item) => (
             <li key={item} data-boot-line className="flex items-center gap-3 opacity-0">
               <span className="text-signal">›</span>
@@ -116,7 +116,7 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
         <div className="flex items-end justify-between">
           <span
             ref={countRef}
-            className="font-mono text-[13vw] leading-none tracking-tighter text-bone sm:text-[8vw]"
+            className="numeric text-[13vw] leading-none tracking-tighter text-bone sm:text-[8vw]"
           >
             000
           </span>

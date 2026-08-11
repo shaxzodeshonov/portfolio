@@ -6,10 +6,10 @@ import { identity } from "@/content/site";
 import { gsap } from "@/lib/gsap";
 
 export const NAV_LINKS = [
-  { href: "#work", label: "Work", index: "03" },
-  { href: "#chess", label: "Mate in one", index: "04" },
-  { href: "#signal", label: "Signal", index: "05" },
-  { href: "#contact", label: "Contact", index: "07" },
+  { href: "#work", label: "Work", index: "3" },
+  { href: "#chess", label: "Mate in one", index: "4" },
+  { href: "#signal", label: "Signal", index: "5" },
+  { href: "#contact", label: "Contact", index: "7" },
 ];
 
 /** Visitor's local time, updated once a second. Empty until mounted. */
@@ -87,7 +87,7 @@ export default function Nav() {
           <div className="shell flex h-14 items-center justify-between gap-6 sm:h-16">
             <a
               href="#top"
-              className="group -my-3 flex min-h-11 items-center gap-2.5 py-3 font-mono text-xs uppercase tracking-[0.2em] text-bone"
+              className="group -my-3 flex min-h-11 items-center gap-2.5 py-3 text-[0.95rem] font-semibold tracking-[-0.01em] text-bone"
             >
               <span
                 aria-hidden="true"
@@ -95,28 +95,40 @@ export default function Nav() {
                   identity.availability.open ? "bg-signal" : "bg-muted"
                 }`}
               />
-              {identity.shortName}
-              <span className="hidden text-dim transition-colors group-hover:text-muted sm:inline">
-                / dev
-              </span>
+              <span className="tracking-[-0.02em]">{identity.name}</span>
             </a>
 
             <nav aria-label="Sections" className="hidden items-center gap-8 md:flex">
               {NAV_LINKS.map((link) => (
+                // Same idea as the section markers: a bullet by default, the
+                // number only while you're pointing at it.
                 <a
                   key={link.href}
                   href={link.href}
-                  className="group relative -my-3 inline-flex min-h-11 items-center py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted transition-colors hover:text-bone"
+                  className="group/link relative -my-3 inline-flex min-h-11 items-center gap-2 py-3 text-[0.95rem] text-muted transition-colors hover:text-bone"
                 >
-                  <span className="mr-1.5 text-dim group-hover:text-signal">{link.index}</span>
+                  <span
+                    aria-hidden="true"
+                    className="relative inline-flex h-4 w-4 shrink-0 items-center justify-start"
+                  >
+                    <span className="absolute left-0 text-dim transition-opacity duration-300 group-hover/link:opacity-0">
+                      •
+                    </span>
+                    <span className="numeric absolute left-0 text-[0.7rem] leading-none text-signal opacity-0 transition-opacity duration-300 group-hover/link:opacity-100">
+                      {link.index}
+                    </span>
+                  </span>
                   {link.label}
                 </a>
               ))}
             </nav>
 
             <div className="flex items-center gap-4">
-              <span className="hidden font-mono text-[11px] uppercase tracking-[0.18em] text-muted lg:inline">
-                <span className="text-dim">local</span> {clock || "--:--:--"}
+              {/* The clock keeps its monospace — figures that change every
+                  second need tabular widths or the text jitters. */}
+              <span className="hidden text-[0.9rem] text-muted lg:inline">
+                <span className="numeric">{clock || "--:--:--"}</span>
+                <span className="ml-2 text-dim">in Tashkent</span>
               </span>
               <button
                 type="button"
@@ -159,11 +171,10 @@ export default function Nav() {
                     data-menu-item
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="display flex items-baseline gap-4 py-2 text-[13vw] text-bone"
+                    className="display flex items-baseline gap-4 py-2 text-[12vw] text-bone"
                   >
-                    <span className="font-mono text-xs tracking-[0.18em] text-dim">
-                      {link.index}
-                    </span>
+                    {/* No hover on touch, so the number is simply shown. */}
+                    <span className="numeric text-xs text-signal">{link.index}</span>
                     {link.label}
                   </a>
                 </li>
@@ -174,7 +185,7 @@ export default function Nav() {
             <p className="label">{identity.availability.label}</p>
             <a
               href={`mailto:${identity.email}`}
-              className="mt-1 inline-flex min-h-11 items-center font-mono text-sm text-signal"
+              className="mt-1 inline-flex min-h-11 items-center text-sm text-signal"
             >
               {identity.email}
             </a>

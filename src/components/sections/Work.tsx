@@ -29,7 +29,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     >
       {/* header row ------------------------------------------------------- */}
       <div className="flex items-baseline justify-between gap-4">
-        <span className={`font-mono text-[11px] tracking-[0.2em] ${accent.text}`}>
+        <span className={`numeric text-[0.8rem] ${accent.text}`}>
           {project.index}
         </span>
         <span className="label">{project.year}</span>
@@ -62,7 +62,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           <p className="mt-4 max-w-[36ch] text-[length:var(--text-lede)] leading-[1.4] text-bone/85">
             {project.summary}
           </p>
-          <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-dim">
+          <p className="mt-6 text-[0.85rem] text-dim">
             {project.role}
           </p>
         </div>
@@ -75,7 +75,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             {project.stack.map((tech) => (
               <li
                 key={tech}
-                className="rounded-full border border-line px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted transition-colors group-hover:border-line/80 group-hover:text-bone/80"
+                className="rounded-full border border-line px-3 py-1.5 text-[0.78rem] text-muted transition-colors group-hover:border-line/80 group-hover:text-bone/80"
               >
                 {tech}
               </li>
@@ -95,7 +95,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               className="bg-void py-6 sm:px-6 sm:first:pl-0"
             >
               <dt className="label">{metric.label}</dt>
-              <dd className="mt-2 font-mono text-[clamp(1.75rem,3.6vw,2.75rem)] leading-none tracking-tight text-bone">
+              <dd className="mt-2 numeric text-[clamp(1.75rem,3.6vw,2.75rem)] leading-none tracking-tight text-bone">
                 <Counter
                   value={metric.value}
                   prefix={metric.prefix}
@@ -119,7 +119,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 href={link.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="group/link -my-3 inline-flex min-h-11 items-center gap-2 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted transition-colors hover:text-bone"
+                className="group/link -my-3 inline-flex min-h-11 items-center gap-2 py-3 text-[0.9rem] font-medium tracking-[-0.01em] text-muted transition-colors hover:text-bone"
               >
                 <span className="sr-only">{project.name}: </span>
                 {link.label}
@@ -140,10 +140,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export default function Work() {
   return (
-    <section id="work" className="relative border-t border-line py-20 sm:py-28 lg:py-36">
+    <section
+      id="work"
+      className="group/section relative border-t border-line py-20 sm:py-28 lg:py-36"
+    >
       <div className="shell">
         <SectionHead
-          label="03 / Selected work"
+          index="3"
+          label="Selected work"
           heading={"Four things I built\nand actually finished."}
           aside={`${projects.length} projects`}
           className="max-w-5xl"

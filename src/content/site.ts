@@ -76,7 +76,7 @@ export const stack = [
 ] as const;
 
 export const manifesto = {
-  label: "02 / Approach",
+  label: "Approach",
   heading: "Four years on the front,\none on the back.",
   body: [
     "I taught myself frontend first — four years of React and TypeScript, long enough to stop being impressed by clever code and start caring whether the thing loads. The last year I've spent going down the stack, because you cannot make an interface honest if you don't know what the server is actually doing.",
@@ -123,7 +123,7 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    index: "01",
+    index: "1",
     name: "thngstbuy",
     year: "2026",
     role: "Solo — frontend, API, database",
@@ -143,7 +143,7 @@ export const projects: Project[] = [
     accent: "signal",
   },
   {
-    index: "02",
+    index: "2",
     name: "removebg",
     year: "2026",
     role: "Solo — model serving, API, frontend",
@@ -162,7 +162,7 @@ export const projects: Project[] = [
     accent: "blueprint",
   },
   {
-    index: "03",
+    index: "3",
     name: "MarketNexus",
     year: "2025",
     role: "Team lead — architecture and review",
@@ -177,7 +177,7 @@ export const projects: Project[] = [
     accent: "signal",
   },
   {
-    index: "04",
+    index: "4",
     name: "OOP Mastery",
     year: "2025",
     role: "Solo — design and build",
@@ -196,7 +196,7 @@ export const projects: Project[] = [
 ];
 
 export const signal = {
-  label: "05 / Signal",
+  label: "Signal",
   heading: "Where I'm at.",
   /**
    * Shown only while the heatmap is falling back to sample data — i.e. when
@@ -213,7 +213,7 @@ export const signal = {
 } as const;
 
 export const offHours = {
-  label: "06 / Off-hours",
+  label: "Off-hours",
   heading: "What I do when\nnobody's paying me.",
   items: [
     {
@@ -235,7 +235,7 @@ export const offHours = {
 } as const;
 
 export const contact = {
-  label: "07 / Contact",
+  label: "Contact",
   heading: "Let's talk.",
   body: "I'm looking for a full-stack role on a team that cares about craft — internship or junior, remote or here in Tashkent. If that's yours, tell me what you're building.",
 } as const;

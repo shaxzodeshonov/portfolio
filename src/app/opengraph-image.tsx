@@ -8,12 +8,13 @@ import { heroLines, identity, stack } from "@/content/site";
  * The card that X, Telegram, LinkedIn, Slack, WhatsApp and iMessage show when
  * someone pastes a link to this site.
  *
- * Generated at build time rather than hand-designed in Figma, so it can never
- * drift from the content in src/content/site.ts.
+ * Generated at build time from src/content/site.ts, so it can never drift
+ * from the page it advertises.
  *
  * Rendered by Satori, which supports a deliberate subset of CSS: flexbox only
- * (no grid), no shorthand `background`, and every element containing more than
- * one child needs an explicit display. Hence the slightly verbose markup.
+ * (no grid), no shorthand `background`, and every element with more than one
+ * child needs an explicit display. It also cannot parse variable fonts — the
+ * Geist package ships static TTF cuts, which is why those are used here.
  */
 
 export const runtime = "nodejs";
@@ -31,10 +32,10 @@ const SIGNAL = "#4ade80";
 const LINE = "#1e232b";
 
 export default async function OpengraphImage() {
-  const [sans, sansBold, mono] = await Promise.all([
+  const [sans, sansMedium, mono] = await Promise.all([
     readFile(join(FONT_DIR, "geist-sans", "Geist-Regular.ttf")),
-    readFile(join(FONT_DIR, "geist-sans", "Geist-SemiBold.ttf")),
-    readFile(join(FONT_DIR, "geist-mono", "GeistMono-Medium.ttf")),
+    readFile(join(FONT_DIR, "geist-sans", "Geist-Medium.ttf")),
+    readFile(join(FONT_DIR, "geist-mono", "GeistMono-Regular.ttf")),
   ]);
 
   // The blueprint grid, drawn as positioned rules because Satori has no
@@ -116,44 +117,26 @@ export default async function OpengraphImage() {
                 marginRight: 14,
               }}
             />
-            <div
-              style={{
-                fontFamily: "Geist Mono",
-                fontSize: 22,
-                letterSpacing: 4,
-                color: BONE,
-              }}
-            >
-              {identity.name.toUpperCase()}
+            <div style={{ fontSize: 26, fontWeight: 500, letterSpacing: -0.5, color: BONE }}>
+              {identity.name}
             </div>
           </div>
 
-          <div
-            style={{
-              fontFamily: "Geist Mono",
-              fontSize: 20,
-              letterSpacing: 3,
-              color: MUTED,
-            }}
-          >
-            {identity.location.toUpperCase()}
-          </div>
+          <div style={{ fontSize: 21, color: MUTED }}>{identity.location}</div>
         </div>
 
         {/* --- headline ------------------------------------------------ */}
-        <div
-          style={{ display: "flex", flexDirection: "column", position: "relative" }}
-        >
+        <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
           {/* One flex row per hero line. Letting Satori wrap a single string
               gives a ragged third line that overflows the card. */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              fontSize: 86,
-              fontWeight: 600,
-              letterSpacing: -3,
-              lineHeight: 1.04,
+              fontSize: 94,
+              fontWeight: 500,
+              letterSpacing: -4,
+              lineHeight: 0.98,
               color: BONE,
             }}
           >
@@ -164,36 +147,16 @@ export default async function OpengraphImage() {
             ))}
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginTop: 34,
-            }}
-          >
-            <div style={{ width: 56, height: 3, backgroundColor: SIGNAL }} />
-            <div
-              style={{
-                fontFamily: "Geist Mono",
-                fontSize: 26,
-                letterSpacing: 2,
-                color: BONE,
-                marginLeft: 20,
-              }}
-            >
+          <div style={{ display: "flex", alignItems: "center", marginTop: 34 }}>
+            <div style={{ width: 54, height: 3, backgroundColor: SIGNAL }} />
+            <div style={{ fontSize: 26, color: BONE, marginLeft: 20 }}>
               {identity.role}
             </div>
           </div>
         </div>
 
         {/* --- bottom row ---------------------------------------------- */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            position: "relative",
-          }}
-        >
+        <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
           <div style={{ width: "100%", height: 1, backgroundColor: LINE }} />
           <div
             style={{
@@ -203,25 +166,10 @@ export default async function OpengraphImage() {
               marginTop: 26,
             }}
           >
-            <div
-              style={{
-                fontFamily: "Geist Mono",
-                fontSize: 20,
-                letterSpacing: 1,
-                color: MUTED,
-                whiteSpace: "nowrap",
-              }}
-            >
+            <div style={{ fontSize: 20, color: MUTED, whiteSpace: "nowrap" }}>
               {stack.slice(0, 5).join("  ·  ")}
             </div>
-            <div
-              style={{
-                fontFamily: "Geist Mono",
-                fontSize: 21,
-                letterSpacing: 2,
-                color: DIM,
-              }}
-            >
+            <div style={{ fontFamily: "Geist Mono", fontSize: 19, color: DIM }}>
               {identity.socials[0].handle}
             </div>
           </div>
@@ -232,8 +180,8 @@ export default async function OpengraphImage() {
       ...size,
       fonts: [
         { name: "Geist", data: sans, weight: 400, style: "normal" },
-        { name: "Geist", data: sansBold, weight: 600, style: "normal" },
-        { name: "Geist Mono", data: mono, weight: 500, style: "normal" },
+        { name: "Geist", data: sansMedium, weight: 500, style: "normal" },
+        { name: "Geist Mono", data: mono, weight: 400, style: "normal" },
       ],
     }
   );

@@ -89,7 +89,7 @@ export default function Hero({ start }: { start: boolean }) {
       // The gap is a floor, not a fixed rhythm: justify-between still spreads
       // the three blocks on a tall screen, but on a short or landscape one
       // they can no longer collapse into each other.
-      className="grain relative flex min-h-[100svh] flex-col justify-between gap-10 overflow-hidden pb-6 pt-24 sm:gap-14 sm:pb-10 sm:pt-28"
+      className="grain relative flex min-h-[100svh] flex-col justify-between gap-6 overflow-hidden pb-6 pt-20 sm:gap-8 sm:pb-10 sm:pt-24"
     >
       {/* --- backdrop ---------------------------------------------------- */}
       <div className="blueprint-grid pointer-events-none absolute inset-0" />
@@ -126,8 +126,10 @@ export default function Hero({ start }: { start: boolean }) {
 
       {/* --- top annotations --------------------------------------------- */}
       <div className="relative shell flex items-start justify-between gap-6">
+        {/* Was "00 / Index" — a label that named nothing. The location is
+            information a reader actually wants, and it balances the role. */}
         <p data-hero className="label max-w-[15ch] opacity-0 sm:max-w-none">
-          00 / Index
+          {identity.location}
         </p>
         <p
           data-hero
@@ -172,7 +174,7 @@ export default function Hero({ start }: { start: boolean }) {
             <Magnetic strength={0.28}>
               <a
                 href="#work"
-                className="group inline-flex h-12 items-center gap-3 rounded-full bg-bone px-6 font-mono text-[11px] uppercase tracking-[0.18em] text-void transition-colors hover:bg-signal sm:h-13"
+                className="group inline-flex h-12 items-center gap-3 rounded-full bg-bone px-6 text-[0.9rem] font-medium tracking-[-0.01em] text-void transition-colors hover:bg-signal sm:h-13"
               >
                 Selected work
                 <span
@@ -187,7 +189,7 @@ export default function Hero({ start }: { start: boolean }) {
             <Magnetic strength={0.28}>
               <a
                 href="#contact"
-                className="group inline-flex h-12 items-center gap-3 rounded-full border border-line px-6 font-mono text-[11px] uppercase tracking-[0.18em] text-bone transition-colors hover:border-signal hover:text-signal sm:h-13"
+                className="group inline-flex h-12 items-center gap-3 rounded-full border border-line px-6 text-[0.9rem] font-medium tracking-[-0.01em] text-bone transition-colors hover:border-signal hover:text-signal sm:h-13"
               >
                 Get in touch
                 <span

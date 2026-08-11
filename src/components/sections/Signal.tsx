@@ -71,12 +71,16 @@ export default async function Signal() {
   const contributions = await getContributions(githubHandle);
 
   return (
-    <section id="signal" className="relative border-t border-line py-20 sm:py-28 lg:py-36">
+    <section
+      id="signal"
+      className="group/section relative border-t border-line py-20 sm:py-28 lg:py-36"
+    >
       <div className="shell">
         <SectionHead
+          index="5"
           label={signal.label}
           heading={signal.heading}
-          aside="fig. 05"
+          aside="the receipts"
           className="max-w-4xl"
         />
 
@@ -91,7 +95,7 @@ export default async function Signal() {
         >
           {signal.stats.map((stat) => (
             <div key={stat.label} className="bg-void px-4 py-8 sm:px-6 sm:py-10">
-              <dd className="font-mono text-[clamp(2rem,5vw,3.5rem)] leading-none tracking-tight text-bone">
+              <dd className="numeric text-[clamp(2rem,5vw,3.5rem)] leading-none tracking-tight text-bone">
                 <Counter
                   value={
                     "derived" in stat && stat.derived === "projects"
@@ -109,7 +113,7 @@ export default async function Signal() {
         {/* Only warn when the grid is not real. Once GITHUB_TOKEN is set the
             caveat disappears on its own. */}
         {contributions.source === "placeholder" ? (
-          <p className="mt-6 font-mono text-[10px] leading-relaxed text-dim">
+          <p className="mt-6 text-[0.8rem] leading-relaxed text-dim">
             {signal.note}
           </p>
         ) : null}
