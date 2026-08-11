@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Read(//d/art_coding/**)",
+      "PowerShell($sp = \"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\"; New-Item -ItemType Directory -Force $sp | Out-Null; Move-Item \"D:\\\\art_coding\\\\demo_portfolio\\\\.claude\" \"$sp\\\\.claude-backup\" -Force; Get-ChildItem -Force \"D:\\\\art_coding\\\\demo_portfolio\")"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Read(//d/art_coding/**)",
+      "PowerShell($sp = \"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\"; New-Item -ItemType Directory -Force $sp | Out-Null; Move-Item \"D:\\\\art_coding\\\\demo_portfolio\\\\.claude\" \"$sp\\\\.claude-backup\" -Force; Get-ChildItem -Force \"D:\\\\art_coding\\\\demo_portfolio\")",
+      "PowerShell($sp = \"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\"; Move-Item \"$sp\\\\.claude-backup\" \"D:\\\\art_coding\\\\demo_portfolio\\\\.claude\" -Force; node -e \"const p=require\\('./package.json'\\);console.log\\(JSON.stringify\\(p.dependencies,null,1\\)\\);console.log\\(JSON.stringify\\(p.devDependencies,null,1\\)\\)\")",
+      "PowerShell(npm install gsap three lenis zod @react-three/fiber@^9 2>&1)",
+      "PowerShell(npm install -D @types/three 2>&1)",
+      "PowerShell(node -e \"const p=require\\('./package.json'\\);console.log\\(JSON.stringify\\({...p.dependencies,...p.devDependencies},null,1\\)\\)\")",
+      "PowerShell(node --experimental-strip-types scripts/verify-chess.ts)",
+      "PowerShell(Move-Item \"scripts\\\\verify-chess.ts\" \"scripts\\\\verify-chess.mts\" -Force)",
+      "PowerShell(node --experimental-strip-types scripts/verify-chess.mts)",
+      "PowerShell(npm run typecheck 2>&1)",
+      "PowerShell(npm run lint 2>&1)",
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell($sp=\"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\\\\audit\"; New-Item -ItemType Directory -Force $sp | Out-Null; Set-Location $sp; npm init -y | Out-Null; npm install puppeteer-core 2>&1 | Select-String -Pattern \"added|err\" | Select-Object -First 3; \"installed to $sp\")",
+      "PowerShell(node \"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\\\\audit\\\\audit.mjs\")",
+      "PowerShell(node \"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\\\\audit\\\\audit.mjs\" 2>&1)",
+      "PowerShell(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);for\\(const[k,v]of Object.entries\\(r\\)\\){console.log\\(k.padEnd\\(24\\), 'vw='+String\\(v.vw\\).padEnd\\(6\\), 'hScroll='+String\\(v.horizontalScroll\\).padEnd\\(6\\), 'overflow='+String\\(v.overflowCount\\).padEnd\\(3\\), 'smallTargets='+String\\(v.smallTargets.length\\).padEnd\\(3\\), 'canvas='+String\\(v.hasCanvas\\).padEnd\\(6\\), 'h1='+v.h1.padEnd\\(9\\), 'hero='+v.heroH, 'errs='+v.consoleErrors.length\\); if\\(v.overflowCount\\)console.log\\('    OVERFLOW:',JSON.stringify\\(v.overflow.slice\\(0,4\\)\\)\\); if\\(v.smallTargets.length\\)console.log\\('    SMALL:',JSON.stringify\\(v.smallTargets.slice\\(0,5\\)\\)\\);}}\\)\")",
+      "PowerShell($sp=\"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\\\\audit\"; \\(Get-Content \"$sp\\\\audit.mjs\"\\) -replace 'pad\\\\\\(\"hScroll\", 9\\\\\\)','pad\\(\"flowOvf\",9\\)' | Set-Content \"$sp\\\\audit.mjs\" -Encoding utf8; node \"$sp\\\\audit.mjs\")",
+      "PowerShell(node \"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\\\\audit\\\\sections.mjs\")",
+      "PowerShell(node \"C:\\\\Users\\\\shaxz\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--art-coding-demo-portfolio\\\\5790e6dd-3432-48e6-8477-6e06a2101749\\\\scratchpad\\\\audit\\\\board.mjs\")"
+    ]
+  }
+}
