@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 
-import { identity } from "@/content/site";
-import { getSiteUrl } from "@/lib/site-url";
+import { identity, seo } from "@/content/site";
+import { getSiteUrl, isPreviewDeployment } from "@/lib/site-url";
 import "./globals.css";
 
 /*
@@ -17,36 +17,48 @@ import "./globals.css";
  * failed one here with `EAI_AGAIN fonts.gstatic.com`.
  */
 
+/*
+ * The <title> is the single heaviest on-page ranking signal for a name query,
+ * and this one is built to be exactly that: the name first, unadorned, then
+ * the role. No site-name suffix, no separator noise — Google rewrites titles
+ * it judges to be padded, and the rewrite is always worse than the original.
+ */
 const title = `${identity.name} — ${identity.role}`;
+
+/*
+ * Preview deploys must never be indexed. Two of them ranking alongside the
+ * real domain is a duplicate-content split, and the .vercel.app hostname will
+ * sometimes win, which is the worst of both outcomes.
+ */
+const indexable = !isPreviewDeployment();
 
 export const metadata: Metadata = {
   // Must be absolute, or the og:image URL resolves against nothing and every
-  // scraper silently drops the preview.
+  // scraper silently drops the preview. It also anchors `alternates.canonical`
+  // below — a canonical pointing at the wrong origin is worse than none.
   metadataBase: new URL(getSiteUrl()),
   title: {
     default: title,
     template: `%s — ${identity.name}`,
   },
-  description: identity.tagline,
-  keywords: [
-    "full-stack engineer",
-    "React",
-    "TypeScript",
-    "Next.js",
-    "Node.js",
-    "PostgreSQL",
-    "Tashkent",
-  ],
-  authors: [{ name: identity.name }],
+  description: seo.description,
+  keywords: [...seo.keywords],
+  authors: [{ name: identity.name, url: getSiteUrl() }],
   creator: identity.name,
+  publisher: identity.name,
+  applicationName: identity.name,
+  category: "technology",
   alternates: { canonical: "/" },
   // The image itself comes from app/opengraph-image.tsx — Next injects the
   // og:image, dimensions and type tags from that file automatically.
   openGraph: {
-    type: "website",
+    type: "profile",
+    firstName: "Shaxzod",
+    lastName: "Eshonov",
+    username: "shaxzodeshonov",
     siteName: identity.name,
     title,
-    description: identity.tagline,
+    description: seo.description,
     url: "/",
     locale: "en_US",
   },
@@ -55,14 +67,31 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title,
-    description: identity.tagline,
+    description: seo.description,
     creator: "@shaxzod_e",
+    site: "@shaxzod_e",
   },
+  // Stops iOS Safari turning the phone number and address in the schema into
+  // auto-styled links that fight the design.
+  formatDetection: { telephone: false, address: false, email: false },
   robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    index: indexable,
+    follow: indexable,
+    googleBot: {
+      index: indexable,
+      follow: indexable,
+      "max-image-preview": "large",
+      // Let Google use the whole snippet and full video previews rather than
+      // truncating to its default. Costs nothing, occasionally wins the click.
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
+  // Omitted entirely when the env var is unset — an empty content="" here can
+  // fail Search Console's check rather than merely being ignored.
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export const viewport: Viewport = {

@@ -18,6 +18,31 @@ export const identity = {
   name: "Shaxzod Eshonov",
   /** Used for the nav wordmark, where the full name is too wide. */
   shortName: "Shaxzod",
+  /**
+   * Every spelling of the same name, for schema.org `alternateName`.
+   *
+   * Uzbek names have no single accepted romanisation: the Uzbek Latin `x` is
+   * the English `kh`, and the `a`/`o` in the first syllable goes both ways
+   * depending on whether the transliteration is from the Latin or the Cyrillic.
+   * Somebody who hears the name spoken will guess "Shakhzod"; somebody reading
+   * a Russian-language document will type "Шахзод". Google treats these as
+   * unrelated strings unless something tells it otherwise, which splits the
+   * search traffic for one person across four dead ends.
+   *
+   * `alternateName` is the sanctioned way to say "these are all me". It is
+   * invisible to readers and is NOT the same thing as hidden keyword text in
+   * the DOM, which is a spam-policy violation. Do not be tempted to add these
+   * to the page body — the schema is the whole mechanism.
+   */
+  nameVariants: [
+    "Shohzod Eshonov",
+    "Shakhzod Eshonov",
+    "Shahzod Eshonov",
+    "Shaxzod Eshanov",
+    "Shohzod Eshanov",
+    "Шахзод Эшонов",
+    "Шохзод Эшонов",
+  ],
   role: "Full-stack engineer",
   location: "Tashkent, Uzbekistan",
   /**
@@ -47,6 +72,59 @@ export const identity = {
     // Instagram (@shaxzd_e) and WhatsApp are omitted deliberately — personal
     // channels tend to weaken a hiring page. Add them back if you disagree.
   ],
+} as const;
+
+/**
+ * ----------------------------------------------------------------------------
+ *  Search metadata.
+ * ----------------------------------------------------------------------------
+ *  None of this renders. It is the <title>, the SERP snippet, and the schema.
+ *
+ *  The rule that governs this block: it must describe the page truthfully. A
+ *  description that oversells gets rewritten by Google (it substitutes its own
+ *  snippet when yours doesn't match the page), so the keyword-stuffed version
+ *  loses to the honest one on its own terms.
+ * ----------------------------------------------------------------------------
+ */
+export const seo = {
+  /**
+   * The SERP snippet. ~155 characters before Google truncates it.
+   *
+   * Leads with the name because the target query IS the name — a snippet that
+   * opens with the query string reads as the obvious answer to it. The rest is
+   * the same claim the page makes, in the same words.
+   */
+  description:
+    "Shaxzod Eshonov — full-stack engineer in Tashkent, Uzbekistan. React and TypeScript on the surface, Node and Postgres underneath. Selected work, and how to reach me.",
+
+  /**
+   * Keywords are ignored by Google and have been since 2009. Bing and Yandex
+   * still read them, and Yandex matters for an Uzbek name — so this stays,
+   * short and honest. A stuffed list here is worse than none.
+   */
+  keywords: [
+    "Shaxzod Eshonov",
+    "Shohzod Eshonov",
+    "Shakhzod Eshonov",
+    "Eshonov",
+    "full-stack engineer",
+    "software engineer Tashkent",
+    "React developer Uzbekistan",
+    "TypeScript",
+    "Next.js",
+    "Node.js",
+    "PostgreSQL",
+    "Inha University in Tashkent",
+  ],
+
+  /**
+   * Google Search Console verification.
+   *
+   * Set GOOGLE_SITE_VERIFICATION in the Vercel dashboard to the token from
+   * the "HTML tag" method. Left unset, the tag is simply omitted — an empty
+   * verification meta is worse than none, as it can fail the check outright.
+   */
+  verificationEnvVar: "GOOGLE_SITE_VERIFICATION",
 } as const;
 
 /**

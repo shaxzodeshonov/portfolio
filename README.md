@@ -119,8 +119,14 @@ env vars are read at build time.
 
 ### 3. Afterwards
 
-- Add the live URL to your GitHub profile, LinkedIn, and CV.
-- Point a custom domain at it in Vercel → Settings → Domains if you have one.
+- Point `shxzd.dev` at it in Vercel → Settings → Domains, and set the
+  `www` variant to **redirect** rather than serve — two hostnames serving the
+  same page splits the ranking signal.
+- Add the live URL to your GitHub profile, LinkedIn, X and CV. This is not
+  housekeeping; see [Search](#search) — it is the highest-leverage thing you
+  can do for ranking on your own name.
+- Verify the domain in Search Console and submit the sitemap.
+
 ---
 
 ## Link previews
@@ -136,9 +142,8 @@ injects `og:image`, `twitter:image` and the dimension tags automatically.
 The one thing that breaks previews is a wrong base URL: the image must be an
 **absolute** URL, and scrapers silently drop the card if it isn't. That's
 handled in `src/lib/site-url.ts`, which prefers `NEXT_PUBLIC_SITE_URL`, then
-Vercel's production URL, then the per-deploy URL, then localhost. On Vercel it
-works with no configuration; set `NEXT_PUBLIC_SITE_URL` once you have a custom
-domain.
+the canonical domain in production, then Vercel's per-deploy URL, then
+localhost. It works with no configuration.
 
 To check it after deploying:
 
@@ -149,3 +154,75 @@ To check it after deploying:
 
 Scrapers cache aggressively. If you change the image, use those tools to force
 a refresh or the old card will keep appearing for days.
+
+---
+
+## Search
+
+The goal is ranking first for **"Shaxzod Eshonov"** and its other spellings.
+That is an *entity* problem, not a keyword problem: Google has to become
+confident that a particular person exists, that these profiles are all his, and
+that this domain is his home page. Everything below serves that.
+
+### What the code does
+
+| Where | What |
+| --- | --- |
+| `src/lib/site-url.ts` | Pins the canonical origin to `https://shxzd.dev`. Preview deploys resolve to themselves so they never compete with it. |
+| `src/app/layout.tsx` | Title leads with the name. Meta description leads with the name. `og:type` is `profile`. Preview deploys get `noindex`. |
+| `src/app/robots.ts` | Points crawlers at the sitemap; blocks `/api/`; blocks previews entirely. |
+| `src/app/sitemap.ts` | One URL. Exists mainly so Search Console has something to submit. |
+| `src/app/page.tsx` | A schema.org `@graph`: `Person` + `WebSite` + `ProfilePage` + one `SoftwareSourceCode` per project, cross-linked by `@id`. |
+| `src/content/site.ts` | `identity.nameVariants` and the `seo` block. Edit copy here, not in the components. |
+
+### Name variants
+
+Uzbek names have no single romanisation — Shaxzod / Shohzod / Shakhzod /
+Shahzod, Эшонов / Eshonov / Eshanov — and Google treats those as unrelated
+strings by default, which splits the traffic for one person four ways.
+
+`identity.nameVariants` feeds schema.org `alternateName`, which is the
+sanctioned way to say "these are all me".
+
+> **Do not put the variants in the page body.** Hidden or repeated
+> name text in the DOM is keyword stuffing under Google's spam policies and
+> risks a manual action, which is far more expensive than the traffic it wins.
+> The schema is the whole mechanism. It is invisible on purpose.
+
+### The half that isn't code
+
+On-page work is necessary and not sufficient. For a name query, the ranking is
+mostly decided by corroboration from elsewhere. In rough order of impact:
+
+1. **Verify the domain in [Search Console](https://search.google.com/search-console)**
+   and submit `https://shxzd.dev/sitemap.xml`. Prefer DNS verification over the
+   HTML tag — it covers subdomains and survives redeploys. Until this is done
+   the site may take weeks to be crawled at all.
+2. **Link back from every profile in `identity.socials`.** GitHub bio website
+   field, LinkedIn *Contact info → Website*, X profile URL, Telegram bio. Each
+   backlink closes the `sameAs` loop and is the single highest-leverage action
+   in this list. Do all four.
+3. **Use one spelling as primary everywhere.** `Shaxzod Eshonov` — same string
+   on GitHub, LinkedIn, X, university pages, conference lists, everything.
+   Consistency is what lets Google merge the variants; the schema only helps if
+   there is a dominant form to merge *into*.
+4. **Add a real photograph.** The same face on this site, GitHub, LinkedIn and
+   X is strong entity evidence and is what a knowledge panel displays. There is
+   no `Person.image` in the schema right now precisely because there is no
+   photo to point at — add one and wire it up.
+5. **Get mentioned on domains you don't own.** Inha University pages, a
+   conference or hackathon listing, a dev.to or Habr post, an open-source
+   contribution credited by name. A handful of these outweighs any further
+   on-page tuning.
+
+### Checking your work
+
+- Structured data — <https://validator.schema.org> and
+  [Rich Results Test](https://search.google.com/test/rich-results)
+- Indexing status — Search Console → *URL Inspection*
+- What Google actually stored — search `site:shxzd.dev`
+
+Expect **4–12 weeks** on a new domain before the name query settles. Ranking
+for your own name is usually easy once Google knows the entity exists; getting
+it to notice a brand-new site with no inbound links is the slow part, and
+step 2 above is what shortens it.
