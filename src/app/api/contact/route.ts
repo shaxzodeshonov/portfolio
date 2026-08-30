@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 import { contactSchema, type ContactResponse } from "@/lib/contact-schema";
 
@@ -9,6 +10,77 @@ import { contactSchema, type ContactResponse } from "@/lib/contact-schema";
  * Wire an email provider where marked — everything around that line is already
  * production-shaped.
  */
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function buildEmailHtml({
+  name,
+  email,
+  message,
+}: {
+  name: string;
+  email: string;
+  message: string;
+}): string {
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeMessage = escapeHtml(message).split("\n").join("<br>");
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f5f5f0;color:#181818;font-family:sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f0;padding:40px 0;">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:6px;padding:32px;border:1px solid #d4d4d4;">
+        <tr><td>
+          <h2 style="margin:0 0 24px;font-size:18px;font-weight:600;color:#181818;">
+            New message from portfolio
+          </h2>
+
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #e0e0e0;font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;color:#666;width:70px;vertical-align:top;">
+                Name
+              </td>
+              <td style="padding:8px 0 8px 12px;border-bottom:1px solid #e0e0e0;font-size:14px;">
+                ${safeName}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #e0e0e0;font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;color:#666;width:70px;vertical-align:top;">
+                Email
+              </td>
+              <td style="padding:8px 0 8px 12px;border-bottom:1px solid #e0e0e0;font-size:14px;">
+                <a href="mailto:${safeEmail}" style="color:#181818;">${safeEmail}</a>
+              </td>
+            </tr>
+          </table>
+
+          <div style="font-size:14px;line-height:1.6;white-space:pre-line;">
+            ${safeMessage}
+          </div>
+
+          <p style="margin:32px 0 0;font-size:11px;color:#999;font-family:'Geist Mono',ui-monospace,monospace;">
+            Sent from shxzd.dev
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`.trim();
+}
 
 const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 3;
@@ -79,20 +151,20 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
 
   const { name, email, message } = parsed.data;
 
-  // ---------------------------------------------------------------------
-  // TODO: send the email. Resend is two lines here:
-  //
-  //   const resend = new Resend(process.env.RESEND_API_KEY);
-  //   await resend.emails.send({ from, to, subject: `Portfolio — ${name}`, text: message });
-  //
-  // Until then it logs, which is enough to prove the round trip works.
-  // ---------------------------------------------------------------------
-  console.log("[contact] new message", {
-    name,
-    email,
-    length: message.length,
-    at: new Date().toISOString(),
-  });
+  try {
+    await resend.emails.send({
+      from: "Portfolio <onboarding@resend.dev>",
+      to: "es.shaxzod@gmail.com",
+      replyTo: email,
+      subject: `Portfolio — ${name}`,
+      html: buildEmailHtml({ name, email, message }),
+      text: message,
+    });
+  } catch (error) {
+    console.error("[contact] failed to send email", error);
+    // Do not change the response below — the visitor still sees success
+    // even if the email failed, per the existing UX.
+  }
 
   return NextResponse.json({
     ok: true,
