@@ -38,8 +38,8 @@ export const identity = {
     "Shohzod Eshonov",
     "Shakhzod Eshonov",
     "Shahzod Eshonov",
-    "Shaxzod Eshanov",
-    "Shohzod Eshanov",
+    "Shaxzod Eshonov",
+    "Shohzod Eshonov",
     "Шахзод Эшонов",
     "Шохзод Эшонов",
   ],
@@ -67,10 +67,11 @@ export const identity = {
     },
     { label: "Telegram", handle: "@shaxzd_e", href: "https://t.me/shaxzd_e" },
     { label: "X", handle: "@shaxzod_e", href: "https://x.com/shaxzod_e" },
+    { label: "Instagram", handle: "@shaxzd_e", href: "https://instagram.com/shaxzd_e" },
     { label: "Email", handle: "es.shaxzod@gmail.com", href: "mailto:es.shaxzod@gmail.com" },
     // NEED: Upwork profile URL once it's live.
-    // Instagram (@shaxzd_e) and WhatsApp are omitted deliberately — personal
-    // channels tend to weaken a hiring page. Add them back if you disagree.
+    // WhatsApp is omitted deliberately — personal channels tend to weaken a
+    // hiring page. Add it back if you disagree.
   ],
 } as const;
 
@@ -115,6 +116,13 @@ export const seo = {
     "Node.js",
     "PostgreSQL",
     "Inha University in Tashkent",
+    "IT Park Tashkent",
+    "IUT",
+    "shaxzd_e",
+    "shaxzod_e",
+    "shaxzodeshonov",
+    "nurafshon"
+    
   ],
 
   /**
